@@ -40,7 +40,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 1.  **Clone este repositório (ou crie sua pasta de projeto):**
     ```bash
     # Se estiver usando git
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+    git clone [https://github.com/danilogep/ETL-PRF-IA-Generativa.git](https://github.com/danilogep/ETL-PRF-IA-Generativa.git)
     cd seu-repositorio
     ```
 
@@ -78,5 +78,6 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
     ```
 
 ### ✅ Resultado Esperado
+
 
 Após a execução, o terminal irá exibir o progresso de cada etapa do ETL. Ao final, um novo arquivo chamado `resultados_prf.csv` será criado na pasta do projeto, contendo todos os dados originais mais uma nova coluna, `MensagemSeguranca`, com o texto gerado pela IA para cada motorista.
