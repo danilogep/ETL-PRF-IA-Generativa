@@ -13,7 +13,7 @@ Este projeto simula um sistema "Enterprise" da Polícia Rodoviária Federal. Dif
 ## 🏗️ Arquitetura e Tecnologias
 
 * **Extração & Seed:** Script gerador de massa de dados (`seed_data.py`) que consome CSVs reais de acidentes de trânsito.
-* **Enriquecimento (IA):** Google Gemini 1.5 Flash via API para análise de contexto geográfico.
+* **Enriquecimento (IA):** Google Gemini 2.0 Flash via API para análise de contexto geográfico.
 * **Performance:** Processamento 100% Assíncrono (`asyncio`), processando 50 registros em ~3 segundos.
 * **Resiliência:** *Retry Logic* (`tenacity`) para garantir robustez contra falhas de API.
 * **Visualização:** Geração automática de gráficos analíticos (`matplotlib`).
@@ -43,8 +43,10 @@ Clone o repositório e configure o ambiente virtual:
 git clone [https://github.com/danilogep/ETL-PRF-IA-Generativa.git](https://github.com/danilogep/ETL-PRF-IA-Generativa.git)
 cd ETL-PRF-IA-Generativa
 python -m venv venv
+
 # Windows:
 .\venv\Scripts\activate
+
 # Linux/Mac:
 source venv/bin/activate
 ```
