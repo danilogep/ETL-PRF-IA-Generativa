@@ -1,99 +1,96 @@
-# 🚔 Pipeline ETL - PRF (Enterprise Edition)
+# 🚔 Pipeline ETL - PRF (Intelligent Context Edition)
 
-Projeto de Engenharia de Dados focado em segurança viária, utilizando **Python Assíncrono**, **IA Generativa (Google Gemini)** e **Arquitetura Modular**.
+Projeto de Engenharia de Dados avançado focado em segurança viária. Utiliza **Python Assíncrono**, **Enriquecimento de Dados (Data Enrichment)** com base em históricos reais de acidentes e **IA Generativa** para criar alertas contextuais.
 
-## 🚀 Sobre o Projeto
-Este pipeline ETL (Extract, Transform, Load) processa dados de abordagens policiais e utiliza Inteligência Artificial para gerar mensagens de conscientização personalizadas para motoristas, visando a redução de acidentes.
+![Status](https://img.shields.io/badge/Status-Concluído-green) ![Python](https://img.shields.io/badge/Python-3.12-blue) ![AI](https://img.shields.io/badge/AI-Google%20Gemini-orange)
 
-Diferente de scripts básicos, este projeto foi arquitetado simulando um ambiente de produção real (Enterprise), com foco em **performance**, **segurança** e **escalabilidade**.
+## 🚀 Evolução do Projeto
+Este projeto simula um sistema "Enterprise" da Polícia Rodoviária Federal. Diferente de scripts básicos que geram frases genéricas, este pipeline:
+1.  **Analisa o local** onde o motorista está (BR, KM, Município).
+2.  **Cruza com dados históricos** de acidentes reais (Datatran 2024/2025).
+3.  **Gera um alerta específico** para o risco daquele trecho (ex: "Curva perigosa", "Animais na pista").
 
 ## 🏗️ Arquitetura e Tecnologias
 
-O projeto segue uma arquitetura modularizada:
-
-* **Linguagem:** Python 3.12+
-* **IA Generativa:** Google Gemini 1.5 Flash (via API)
-* **Processamento:** Assíncrono (`asyncio`) para alta performance.
-* **Resiliência:** Implementação de *Retry Logic* com `tenacity` para falhas de rede.
-* **Segurança:** Gestão de credenciais via Variáveis de Ambiente (`python-dotenv`).
-* **Visualização:** Geração automática de relatórios gráficos com `matplotlib`.
+* **Extração & Seed:** Script gerador de massa de dados (`seed_data.py`) que consome CSVs reais de acidentes de trânsito.
+* **Enriquecimento (IA):** Google Gemini 1.5 Flash via API para análise de contexto geográfico.
+* **Performance:** Processamento 100% Assíncrono (`asyncio`), processando 50 registros em ~3 segundos.
+* **Resiliência:** *Retry Logic* (`tenacity`) para garantir robustez contra falhas de API.
+* **Visualização:** Geração automática de gráficos analíticos (`matplotlib`).
 
 ## 📂 Estrutura do Projeto
 
 ```text
-├── data/              # Armazenamento de arquivos (CSV e Imagens)
+├── data/              # Dados brutos (Datatran) e processados
 ├── logs/              # Logs de execução
-├── src/               # Código Fonte
-│   ├── config.py      # Configurações centrais e variáveis de ambiente
-│   ├── extract.py     # Leitura e validação de dados (Pandas)
-│   ├── transform.py   # Lógica de IA Assíncrona (Google Gemini)
-│   ├── load.py        # Salvamento de dados e geração de gráficos
-│   └── pipeline.py    # Orquestrador principal
-├── .env.example       # Modelo de variáveis de ambiente
-├── requirements.txt   # Dependências do projeto
+├── src/               # Código Fonte Modular
+│   ├── config.py      # Configurações e Variáveis de Ambiente
+│   ├── seed_data.py   # [NOVO] Gerador de dados fictícios baseado em locais reais
+│   ├── extract.py     # Leitura e validação
+│   ├── transform.py   # Lógica de IA Contextual (Gemini)
+│   ├── load.py        # Carga e Dashboards
+│   └── pipeline.py    # Orquestrador
+├── .env.example       # Template de credenciais
 └── README.md          # Documentação
 ```
 
 ## ⚙️ Como Executar
 
 ### 1. Preparação
-
-Clone o repositório e entre na pasta:
+Clone o repositório e configure o ambiente virtual:
 
 ```bash
-git clone [https://github.com/seu-usuario/seu-repo.git](https://github.com/seu-usuario/seu-repo.git)
-cd seu-repo
-```
-
-### 2. Configuração do Ambiente Virtual
-
-É recomendado usar um ambiente virtual para manter as bibliotecas isoladas.
-
-**Windows:**
-```bash
+git clone [https://github.com/danilogep/ETL-PRF-IA-Generativa.git](https://github.com/danilogep/ETL-PRF-IA-Generativa.git)
+cd ETL-PRF-IA-Generativa
 python -m venv venv
+# Windows:
 .\venv\Scripts\activate
-```
-
-**Linux/Mac:**
-```bash
-python3 -m venv venv
+# Linux/Mac:
 source venv/bin/activate
 ```
 
-### 3. Instalação das Dependências
-
-Instale todas as bibliotecas necessárias de uma vez:
+### 2. Instalação e Configuração
+Instale as dependências e configure sua chave de API do Google Gemini no arquivo `.env`:
 
 ```bash
 pip install pandas google-generativeai python-dotenv tenacity matplotlib
 ```
 
-### 4. Configuração de Segurança (API Key)
+### 3. Geração de Massa de Dados (Seed)
+Este passo lê os arquivos históricos de acidentes e cria motoristas fictícios passando por locais de risco real:
 
-O projeto usa variáveis de ambiente para proteger sua chave de API.
-
-1.  Crie um arquivo chamado `.env` na raiz do projeto (use o `.env.example` como base).
-2.  Adicione sua chave do Google Gemini (AI Studio):
-
-```ini
-# Conteúdo do arquivo .env
-GOOGLE_API_KEY=ColeSuaChaveAqui
+```bash
+python -m src.seed_data
 ```
 
-### 5. Execução do Pipeline
-
-Para rodar o processo completo (Extração -> IA -> Gráficos):
+### 4. Execução do Pipeline ETL
+Processa os dados, consulta a IA e gera os relatórios:
 
 ```bash
 python -m src.pipeline
 ```
 
-## 📊 Resultados Esperados
+## 📊 Resultados e Análises
 
-Ao final da execução, verifique a pasta `data/`:
-* `resultados_prf.csv`: Dados enriquecidos com as mensagens da IA.
-* `relatorio_grafico.png`: Gráfico estatístico das abordagens gerado automaticamente.
+O sistema gera logs detalhados e arquivos visuais na pasta `data/`.
+
+### ⏱️ Performance de Execução
+Log real de execução demonstrando o processamento assíncrono de 50 registros enriquecidos em **apenas 3 segundos**:
+
+![Log de Execução](./data/execution_log.png)
+
+### Exemplo de Enriquecimento de Dados (Antes vs. Depois)
+
+| Motorista | Local | Causa do Risco | **Mensagem Gerada pela IA** |
+| :--- | :--- | :--- | :--- |
+| Lucas G. | BR-10 (KM 502) | Animais na Pista | *"Atenção! Risco de animais na pista. Redobre a atenção e reduza a velocidade!"* |
+| Pedro S. | BR-060 (KM 404) | Reação tardia | *"Atenção! Reaja rápido, evite acidentes. Prudência!"* |
+| Julia O. | BR-116 (KM 536) | Retorno proibido | *"Atenção! Retorno proibido nesse trecho causa acidentes frequentes. Evite manobras irregulares!"* |
+
+### Dashboard Gerado Automaticamente
+O pipeline gera um gráfico de distribuição dos veículos abordados para análise estatística:
+
+![Gráfico de Veículos](./data/relatorio_grafico.png)
 
 ---
-Desenvolvido com foco em boas práticas de Engenharia de Dados.
+**Desenvolvido por Danilo Evangelista**

@@ -5,8 +5,6 @@ from src.config import GOOGLE_API_KEY
 
 # 1. Configura a biblioteca do Google
 genai.configure(api_key=GOOGLE_API_KEY)
-
-# 2. Escolhe o modelo (gemini-1.5-flash é rápido e ótimo para mensagens curtas)
 model = genai.GenerativeModel("models/gemini-2.0-flash-001")
 
 
@@ -19,10 +17,20 @@ async def gerar_mensagem(motorista: dict):
     nome = motorista["Nome"]
     veiculo = motorista["Veiculo"]
 
+    # Pegamos os dados do local ---
+    # Usamos .get() caso o dado não exista (prevenção de erro)
+    br = motorista.get("BR", "Rodovia")
+    km = motorista.get("KM", "?")
+    municipio = motorista.get("Municipio", "Região")
+    causa_risco = motorista.get("Causa_Frequente", "acidentes diversos")
+
     prompt = (
-        f"Você é um policial rodoviário virtual educado. "
-        f"Crie uma frase curta (máximo 15 palavras) de conscientização para {nome}, "
-        f"que dirige um {veiculo}. Foque em segurança."
+        f"Você é um policial rodoviário experiente da PRF."
+        f"Gere um alerta curto e impactante (máximo 20 palavras) para {nome}, "
+        f"que dirige um {veiculo}."
+        f"CONTEXTO: O motorista está passando pela BR-{br} no KM {km} ({municipio}). "
+        f"Neste local, o histórico mostra muitos acidentes causados por: '{causa_risco}'."
+        f"A mensagem deve alertar especificamente sobre esse risco."
     )
 
     try:
